@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include <queue>
+#include <deque>
 #include <stdexcept>
 #include <string>
 #include <string_view>
@@ -13,8 +13,15 @@ class Writer;
 class ByteStream
 {
 protected:
-  uint64_t capacity_;
+  using byte = uint8_t;
+
+  std::uint64_t capacity_;
   // Please add any additional state to the ByteStream here, and not to the Writer and Reader interfaces.
+  std::deque<byte> buf_;
+  std::uint64_t bytes_pushed_;
+  std::uint64_t bytes_popped_;
+  bool close_;
+  bool error_;
 
 public:
   explicit ByteStream( uint64_t capacity );
