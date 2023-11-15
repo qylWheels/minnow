@@ -1,3 +1,4 @@
+#include <cassert>
 #include <cstdint>
 
 #include <deque>
@@ -15,7 +16,7 @@ Writer::push( std::string data )
 {
   // Your code here.
   const std::uint64_t avail = this->available_capacity();
-  const std::uint64_t len = static_cast<uint64_t>(data.size());
+  const std::uint64_t len = data.length();
   const std::uint64_t copy = avail > len ? len : avail;
   this->bytes_pushed_ += copy;
   for (std::uint64_t i = 0; i < copy; ++i) {

@@ -2,11 +2,28 @@
 
 #include "byte_stream.hh"
 
+#include <cstdint>
+
+#include <optional>
 #include <string>
+#include <vector>
 
 class Reassembler
 {
+private:
+  std::uint64_t next_reassemble_index_;     /* index of next byte to be reassembled */
+  std::vector<std::optional<char>> cache_;  /* store strings that can't be written immediately */
+
+private:
+  void
+  insert_cache(std::uint64_t first_index, std::string data);
+
+  void
+  try_reassemble_cache(Writer &output);
+
 public:
+  Reassembler();
+
   /*
    * Insert a new substring to be reassembled into a ByteStream.
    *   `first_index`: the index of the first byte of the substring
@@ -27,8 +44,10 @@ public:
    *
    * The Reassembler should close the stream after writing the last byte.
    */
-  void insert( uint64_t first_index, std::string data, bool is_last_substring, Writer& output );
+  void
+  insert(std::uint64_t first_index, std::string data, bool is_last_substring, Writer& output );
 
   // How many bytes are stored in the Reassembler itself?
-  uint64_t bytes_pending() const;
+  std::uint64_t
+  bytes_pending() const;
 };
