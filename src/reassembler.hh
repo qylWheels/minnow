@@ -11,15 +11,14 @@
 class Reassembler
 {
 private:
-  std::uint64_t next_reassemble_index_;     /* index of next byte to be reassembled */
-  std::vector<std::optional<char>> cache_;  /* store strings that can't be written immediately */
+  // Read the picture in p3 in check1.pdf
+  std::int64_t first_unpopped_;
+  std::int64_t first_unassembled_;
+  std::uint64_t capacity_;
+  std::vector<std::optional<char>> buf_;
 
-private:
   void
-  insert_cache(std::uint64_t first_index, std::string data);
-
-  void
-  try_reassemble_cache(Writer &output);
+  try_insert(Writer &output);   // try to insert bytes in buffer after inserting successfully
 
 public:
   Reassembler();
@@ -45,7 +44,7 @@ public:
    * The Reassembler should close the stream after writing the last byte.
    */
   void
-  insert(std::uint64_t first_index, std::string data, bool is_last_substring, Writer& output );
+  insert(std::uint64_t first_index, std::string data, bool is_last_substring, Writer& output);
 
   // How many bytes are stored in the Reassembler itself?
   std::uint64_t
