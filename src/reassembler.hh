@@ -12,10 +12,13 @@ class Reassembler
 {
 private:
   // Read the picture in p3 in check1.pdf
-  std::int64_t first_unpopped_;
-  std::int64_t first_unassembled_;
+  std::uint64_t first_unpopped_;
+  std::uint64_t first_unassembled_;
   std::uint64_t capacity_;
   std::vector<std::optional<char>> buf_;
+
+  bool last_substring_arrived_;
+  std::uint64_t last_substring_end_;  // next byte of the last byte of last_substring
 
   void
   try_insert(Writer &output);   // try to insert bytes in buffer after inserting successfully
